@@ -1,62 +1,94 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row">
-    <div class="form-container">
-        <h1>
-            <span class="material-symbols-rounded">edit_note</span>
-            Add New Entry
-        </h1>
-        <div class="card">
-            <form method="POST">
-                <div class="mb-3">
-                    <label for="morning_routine" class="form-label">
-                        <span class="material-symbols-rounded">wb_sunny</span>
-                        Morning Routine
-                    </label>
-                    <textarea class="form-control" id="morning_routine" name="morning_routine" rows="3" 
-                        placeholder="List your morning skincare products and steps..."></textarea>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="evening_routine" class="form-label">
-                        <span class="material-symbols-rounded">dark_mode</span>
-                        Evening Routine
-                    </label>
-                    <textarea class="form-control" id="evening_routine" name="evening_routine" rows="3" 
-                        placeholder="List your evening skincare products and steps..."></textarea>
-                </div>
-                
-                <div class="mb-3">
-                    <label for="skin_condition" class="form-label">
-                        <span class="material-symbols-rounded">sentiment_satisfied</span>
-                        Skin Condition
-                    </label>
-                    <input type="text" class="form-control" id="skin_condition" name="skin_condition" 
-                        placeholder="How does your skin feel today?">
-                </div>
-                
-                <div class="mb-3">
-                    <label for="notes" class="form-label">
-                        <span class="material-symbols-rounded">note_alt</span>
-                        Notes
-                    </label>
-                    <textarea class="form-control" id="notes" name="notes" rows="2" 
-                        placeholder="Any additional notes or observations..."></textarea>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">
-                        <span class="material-symbols-rounded">save</span>
-                        Save Entry
-                    </button>
-                    <a href="{{ url_for('index') }}" class="btn btn-secondary">
-                        <span class="material-symbols-rounded">close</span>
-                        Cancel
-                    </a>
-                </div>
-            </form>
+<div class="container mt-4">
+    <h2>
+        <span class="material-symbols-rounded">edit_note</span>
+        Add New Entry
+    </h2>
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="morning_routine" class="form-label">
+                <span class="material-symbols-rounded">wb_sunny</span>
+                Morning Routine
+            </label>
+            <textarea class="form-control" id="morning_routine" name="morning_routine" rows="3" 
+                placeholder="List your morning skincare products and steps..."></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="evening_routine" class="form-label">
+                <span class="material-symbols-rounded">dark_mode</span>
+                Evening Routine
+            </label>
+            <textarea class="form-control" id="evening_routine" name="evening_routine" rows="3" 
+                placeholder="List your evening skincare products and steps..."></textarea>
+        </div>
+        
+        <div class="mb-3">
+            <label for="skin_condition" class="form-label">
+                <span class="material-symbols-rounded">sentiment_satisfied</span>
+                Skin Condition
+            </label>
+            <input type="text" class="form-control" id="skin_condition" name="skin_condition" 
+                placeholder="How does your skin feel today?">
+        </div>
+        
+        <div class="mb-3">
+            <label for="photo" class="form-label">
+                <span class="material-symbols-rounded">camera</span>
+                Upload Photo
+            </label>
+            <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+            <div class="form-text">Upload a clear photo of your skin to get AI-powered analysis and recommendations.</div>
+        </div>
+        
+        <div class="mb-3">
+            <label for="notes" class="form-label">
+                <span class="material-symbols-rounded">note_alt</span>
+                Notes
+            </label>
+            <textarea class="form-control" id="notes" name="notes" rows="2" 
+                placeholder="Any additional notes or observations..."></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-rounded">save</span>
+                Save Entry
+            </button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                <span class="material-symbols-rounded">close</span>
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="aiAnalysisModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">AI Skin Analysis</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="analysisResults"></div>
+                <div id="productRecommendations" class="mt-3"></div>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('photo').addEventListener('change', function(e) {
+    if (this.files && this.files[0]) {
+        const img = document.createElement('img');
+        img.classList.add('img-preview', 'mt-2', 'mb-2');
+        img.style.maxWidth = '200px';
+        img.src = URL.createObjectURL(this.files[0]);
+        this.parentNode.appendChild(img);
+    }
+});
+</script>
 {% endblock %}

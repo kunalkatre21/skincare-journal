@@ -1,74 +1,48 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="row">
-    <div class="content-container">
-        <div class="header">
-            <h1>
-                <span class="material-symbols-rounded">auto_awesome</span>
-                My Skincare Journal
-            </h1>
-            <a href="{{ url_for('add_entry') }}" class="btn btn-primary">
-                <span class="material-symbols-rounded">add</span>
-                Add New Entry
-            </a>
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-12 mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h2>Skincare Transformations</h2>
+                <a href="{{ url_for('start_journey') }}" class="btn btn-primary">Start Your Journey</a>
+            </div>
         </div>
-        
-        {% if entries %}
-            {% for entry in entries %}
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">
-                        <span class="material-symbols-rounded">calendar_today</span>
-                        {{ entry.date.strftime('%B %d, %Y') }}
-                    </h5>
-                </div>
-                <div class="card-content">
-                    <div class="routine-section">
-                        <div class="routine-item">
-                            <h6>
-                                <span class="material-symbols-rounded">wb_sunny</span>
-                                Morning Routine
-                            </h6>
-                            <p class="card-text">{{ entry.morning_routine }}</p>
-                        </div>
-                        <div class="routine-item">
-                            <h6>
-                                <span class="material-symbols-rounded">dark_mode</span>
-                                Evening Routine
-                            </h6>
-                            <p class="card-text">{{ entry.evening_routine }}</p>
-                        </div>
-                    </div>
-                    <div class="condition-section">
-                        <h6>
-                            <span class="material-symbols-rounded">sentiment_satisfied</span>
-                            Skin Condition
-                        </h6>
-                        <p class="card-text">{{ entry.skin_condition }}</p>
-                    </div>
-                    {% if entry.notes %}
-                    <div class="notes-section">
-                        <h6>
-                            <span class="material-symbols-rounded">note_alt</span>
-                            Notes
-                        </h6>
-                        <p class="card-text">{{ entry.notes }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            {% endfor %}
-        {% else %}
-            <div class="empty-state card">
-                <span class="material-symbols-rounded">face_retouching_natural</span>
-                <p>No entries yet. Start tracking your skincare routine by adding a new entry!</p>
-                <a href="{{ url_for('add_entry') }}" class="btn btn-primary">
-                    <span class="material-symbols-rounded">add</span>
-                    Add First Entry
-                </a>
-            </div>
-        {% endif %}
     </div>
+
+    {% if transformations %}
+    <div class="row">
+        {% for story in transformations %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="transformation-photos">
+                        {% if story.before_photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + story.before_photo) }}" alt="Before" class="img-fluid mb-2">
+                        {% endif %}
+                        {% if story.after_photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + story.after_photo) }}" alt="After" class="img-fluid">
+                        {% endif %}
+                    </div>
+                    <p class="card-text mt-3">{{ story.routine_summary }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">{{ days_since(story.created_at) }} days ago</small>
+                        <a href="{{ url_for('track_inspired', share_link=story.share_link) }}" class="btn btn-outline-primary btn-sm">
+                            Start My Journey
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <h3>No transformations yet</h3>
+        <p class="text-muted">Be the first to share your skincare journey!</p>
+        <a href="{{ url_for('start_journey') }}" class="btn btn-primary mt-3">Start Your Journey</a>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Edit Entry</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label for="morning_routine" class="form-label">Morning Routine</label>
+            <textarea class="form-control" id="morning_routine" name="morning_routine" rows="3">{{ entry.morning_routine }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="evening_routine" class="form-label">Evening Routine</label>
+            <textarea class="form-control" id="evening_routine" name="evening_routine" rows="3">{{ entry.evening_routine }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="skin_condition" class="form-label">Skin Condition</label>
+            <input type="text" class="form-control" id="skin_condition" name="skin_condition" value="{{ entry.skin_condition }}">
+        </div>
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes</label>
+            <textarea class="form-control" id="notes" name="notes" rows="3">{{ entry.notes }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Entry</button>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}

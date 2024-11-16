@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Start Your Skincare Journey</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Start Your Journey</h1>
+            {% if inspired_by %}
+            <p class="text-xl text-gray-600">Inspired by another transformation? Let's start yours!</p>
+            {% else %}
+            <p class="text-xl text-gray-600">Document your skincare transformation</p>
+            {% endif %}
+        </div>
+
+        <form action="{{ url_for('start_journey') }}" method="post" enctype="multipart/form-data" class="bg-white rounded-xl shadow-lg p-8">
+            <div class="mb-6">
+                <label class="block text-gray-700 text-lg font-semibold mb-2" for="routine_summary">
+                    What's your skincare goal?
+                </label>
+                <textarea id="routine_summary" name="routine_summary" rows="3" 
+                          class="w-full px-4 py-2 rounded-lg border focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                          placeholder="E.g., Clear my acne, reduce dark spots, achieve glass skin..."
+                          required></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-gray-700 text-lg font-semibold mb-2" for="before_photo">
+                    Upload your before photo
+                </label>
+                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-pink-500 transition">
+                    <input type="file" id="before_photo" name="before_photo" 
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                           accept="image/*" required>
+                    <div class="text-gray-500">
+                        <svg class="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <p>Click or drag photo here</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6" id="after_photo_section" style="display: none;">
+                <label class="block text-gray-700 text-lg font-semibold mb-2" for="after_photo">
+                    Have an after photo ready? (Optional)
+                </label>
+                <div class="relative border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-pink-500 transition">
+                    <input type="file" id="after_photo" name="after_photo" 
+                           class="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                           accept="image/*">
+                    <div class="text-gray-500">
+                        <svg class="mx-auto h-12 w-12 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <p>Click or drag photo here</p>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-pink-500 text-white py-4 px-8 rounded-full text-lg font-semibold hover:bg-pink-600 transition">
+                Start My Journey
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Randomly show after photo option (A/B test)
+        if (Math.random() < 0.5) {
+            document.getElementById('after_photo_section').style.display = 'block';
+        }
+
+        // Preview selected images
+        function setupImagePreview(inputId) {
+            const input = document.getElementById(inputId);
+            input.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const container = input.closest('div');
+                        container.style.backgroundImage = `url(${e.target.result})`;
+                        container.style.backgroundSize = 'cover';
+                        container.style.backgroundPosition = 'center';
+                        container.querySelector('div').style.display = 'none';
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        setupImagePreview('before_photo');
+        setupImagePreview('after_photo');
+    </script>
+</body>
+</html>
