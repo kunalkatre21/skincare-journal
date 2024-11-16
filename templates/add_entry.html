@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="form-container">
+        <h1>
+            <span class="material-symbols-rounded">edit_note</span>
+            Add New Entry
+        </h1>
+        <div class="card">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="morning_routine" class="form-label">
+                        <span class="material-symbols-rounded">wb_sunny</span>
+                        Morning Routine
+                    </label>
+                    <textarea class="form-control" id="morning_routine" name="morning_routine" rows="3" 
+                        placeholder="List your morning skincare products and steps..."></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="evening_routine" class="form-label">
+                        <span class="material-symbols-rounded">dark_mode</span>
+                        Evening Routine
+                    </label>
+                    <textarea class="form-control" id="evening_routine" name="evening_routine" rows="3" 
+                        placeholder="List your evening skincare products and steps..."></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="skin_condition" class="form-label">
+                        <span class="material-symbols-rounded">sentiment_satisfied</span>
+                        Skin Condition
+                    </label>
+                    <input type="text" class="form-control" id="skin_condition" name="skin_condition" 
+                        placeholder="How does your skin feel today?">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="notes" class="form-label">
+                        <span class="material-symbols-rounded">note_alt</span>
+                        Notes
+                    </label>
+                    <textarea class="form-control" id="notes" name="notes" rows="2" 
+                        placeholder="Any additional notes or observations..."></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <span class="material-symbols-rounded">save</span>
+                        Save Entry
+                    </button>
+                    <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                        <span class="material-symbols-rounded">close</span>
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

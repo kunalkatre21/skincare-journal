@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="content-container">
+        <div class="header">
+            <h1>
+                <span class="material-symbols-rounded">auto_awesome</span>
+                My Skincare Journal
+            </h1>
+            <a href="{{ url_for('add_entry') }}" class="btn btn-primary">
+                <span class="material-symbols-rounded">add</span>
+                Add New Entry
+            </a>
+        </div>
+        
+        {% if entries %}
+            {% for entry in entries %}
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">
+                        <span class="material-symbols-rounded">calendar_today</span>
+                        {{ entry.date.strftime('%B %d, %Y') }}
+                    </h5>
+                </div>
+                <div class="card-content">
+                    <div class="routine-section">
+                        <div class="routine-item">
+                            <h6>
+                                <span class="material-symbols-rounded">wb_sunny</span>
+                                Morning Routine
+                            </h6>
+                            <p class="card-text">{{ entry.morning_routine }}</p>
+                        </div>
+                        <div class="routine-item">
+                            <h6>
+                                <span class="material-symbols-rounded">dark_mode</span>
+                                Evening Routine
+                            </h6>
+                            <p class="card-text">{{ entry.evening_routine }}</p>
+                        </div>
+                    </div>
+                    <div class="condition-section">
+                        <h6>
+                            <span class="material-symbols-rounded">sentiment_satisfied</span>
+                            Skin Condition
+                        </h6>
+                        <p class="card-text">{{ entry.skin_condition }}</p>
+                    </div>
+                    {% if entry.notes %}
+                    <div class="notes-section">
+                        <h6>
+                            <span class="material-symbols-rounded">note_alt</span>
+                            Notes
+                        </h6>
+                        <p class="card-text">{{ entry.notes }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state card">
+                <span class="material-symbols-rounded">face_retouching_natural</span>
+                <p>No entries yet. Start tracking your skincare routine by adding a new entry!</p>
+                <a href="{{ url_for('add_entry') }}" class="btn btn-primary">
+                    <span class="material-symbols-rounded">add</span>
+                    Add First Entry
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
